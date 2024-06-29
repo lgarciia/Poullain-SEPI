@@ -5,72 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tableau des Kilomètres</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        header {
-            background-color: #001f3f;
-            color: #fff;
-            padding: 15px;
-            text-align: center;
-        }
-
-        main {
-            padding: 20px;
-        }
-
-        label {
-            font-weight: bold;
-        }
-
-        select {
-            margin-bottom: 20px;
-            padding: 5px;
-            font-size: 1em;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        th,
-        td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: center;
-        }
-
-        th {
-            background-color: #001f3f;
-            color: white;
-        }
-
-        tbody tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-
-        tbody tr:hover {
-            background-color: #ddd;
-        }
-
-        input[type="number"] {
-            width: 80px;
-        }
-    </style>
+    <link rel="stylesheet" href="KMS.CSS">
 </head>
 
 <body>
     <header>
-        <h1>Tableau des Kilomètres</h1>
+        <nav>
+            <h1 class="title">Tableau des Kilomètres</h1>
+            <div>
+                <a href="VHL.HTML" class="back-button">Retour</a>
+            </div>
+        </nav>
     </header>
-
     <main>
-        <label for="month">Sélectionner un mois :</label>
+        <div class="center-container">
         <select id="month">
             <option value="01">Janvier</option>
             <option value="02">Février</option>
@@ -85,12 +33,11 @@
             <option value="11">Novembre</option>
             <option value="12">Décembre</option>
         </select>
+        <button id="importButton">Importer Kms de début</button>
         <table id="kilometerTable">
             <thead>
                 <tr>
                     <th>Numéro de parc</th>
-                    <th>Date de début</th>
-                    <th>Date de fin</th>
                     <th>Kilométrage de début</th>
                     <th>Kilométrage de fin</th>
                     <th>Kilométrage parcouru</th>
@@ -105,6 +52,7 @@
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const monthSelect = document.getElementById('month');
+            const importButton = document.getElementById('importButton');
             const kilometerTableBody = document.querySelector('#kilometerTable tbody');
 
             // Fonction pour récupérer tous les numéros de parc des véhicules enregistrés
@@ -120,74 +68,102 @@
             }
 
             // Fonction pour afficher les numéros de parc des véhicules dans le tableau
-            function displayVehicleNumbers(vehicleNumbers) {
+            function displayVehicleNumbers(vehicleNumbers, monthData) {
                 // Effacer le contenu actuel du tableau
                 kilometerTableBody.innerHTML = '';
 
                 // Boucler à travers les numéros de parc et les ajouter au tableau
                 vehicleNumbers.forEach(vehicleNumber => {
                     const newRow = kilometerTableBody.insertRow();
+                    const startKm = monthData[vehicleNumber]?.startKm || '';
+                    const endKm = monthData[vehicleNumber]?.endKm || '';
+                    const distance = startKm && endKm ? endKm - startKm : '';
                     newRow.innerHTML = `<td>${vehicleNumber}</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td><input type="number" class="startKmInput" placeholder="Kms début"></td>
-                                        <td><input type="number" class="endKmInput" placeholder="Kms fin"></td>
-                                        <td></td>`;
+                                        <td><input type="number" class="startKmInput" data-vehicle="${vehicleNumber}" value="${startKm}" placeholder="Kms début"></td>
+                                        <td><input type="number" class="endKmInput" data-vehicle="${vehicleNumber}" value="${endKm}" placeholder="Kms fin"></td>
+                                        <td class="distance">${distance}</td>`;
                 });
             }
 
-            // Fonction pour obtenir la date de début du mois
-            function getFirstDayOfMonth(year, month) {
-                return new Date(year, month - 1, 1).toLocaleDateString('fr-CA');
+            // Fonction pour charger les données du mois sélectionné
+            function loadMonthData(month) {
+                const monthData = JSON.parse(localStorage.getItem(`monthData_${month}`)) || {};
+                return monthData;
             }
 
-            // Fonction pour obtenir la date de fin du mois
-            function getLastDayOfMonth(year, month) {
-                return new Date(year, month, 0).toLocaleDateString('fr-CA');
+            // Fonction pour sauvegarder les données du mois sélectionné
+            function saveMonthData(month, data) {
+                localStorage.setItem(`monthData_${month}`, JSON.stringify(data));
             }
 
-            // Écouter les changements            // Écouter les changements dans la liste déroulante des mois
+            // Fonction pour obtenir le mois précédent
+            function getPreviousMonth(month) {
+                const prevMonth = parseInt(month) - 1;
+                return prevMonth < 10 ? '0' + prevMonth : prevMonth.toString();
+            }
+
+            // Fonction pour importer les kms de fin du mois précédent
+            function importPreviousMonthData() {
+                const selectedMonth = monthSelect.value;
+                const prevMonth = getPreviousMonth(selectedMonth);
+                if (prevMonth === '00') return; // Si le mois sélectionné est janvier, il n'y a pas de mois précédent à importer
+
+                const prevMonthData = loadMonthData(prevMonth);
+                const monthData = loadMonthData(selectedMonth);
+
+                getAllVehicleNumbers().forEach(vehicleNumber => {
+                    const endKmPrevMonth = prevMonthData[vehicleNumber]?.endKm;
+                    if (endKmPrevMonth !== undefined) {
+                        monthData[vehicleNumber] = monthData[vehicleNumber] || {};
+                        monthData[vehicleNumber].startKm = endKmPrevMonth;
+                    }
+                });
+
+                saveMonthData(selectedMonth, monthData);
+                displayVehicleNumbers(getAllVehicleNumbers(), monthData);
+            }
+
+            // Écouter les changements dans la liste déroulante des mois
             monthSelect.addEventListener('change', function () {
                 const selectedMonth = this.value;
-                const year = new Date().getFullYear(); // Année actuelle
-                const firstDayOfMonth = getFirstDayOfMonth(year, selectedMonth);
-                const lastDayOfMonth = getLastDayOfMonth(year, selectedMonth);
-                displayDateRange(firstDayOfMonth, lastDayOfMonth);
+                const monthData = loadMonthData(selectedMonth);
+                const allVehicleNumbers = getAllVehicleNumbers();
+                displayVehicleNumbers(allVehicleNumbers, monthData);
             });
 
-            // Fonction pour afficher la plage de dates dans le tableau
-            function displayDateRange(startDate, endDate) {
-                const tableRows = document.querySelectorAll('#kilometerTable tbody tr');
-                tableRows.forEach(row => {
-                    row.children[1].textContent = startDate; // Date de début
-                    row.children[2].textContent = endDate; // Date de fin
-                });
-            }
+            // Écouter les changements des champs de kilométrage pour recalculer le kilométrage parcouru et sauvegarder les données
+            kilometerTableBody.addEventListener('input', function (event) {
+                if (event.target.classList.contains('startKmInput') || event.target.classList.contains('endKmInput')) {
+                    const vehicleNumber = event.target.dataset.vehicle;
+                    const selectedMonth = monthSelect.value;
+                    const monthData = loadMonthData(selectedMonth);
 
-            // Initialisez la liste déroulante avec les mois de l'année
-            // et afficher les numéros de parc pour le mois actuel
+                    const startKm = parseFloat(document.querySelector(`.startKmInput[data-vehicle="${vehicleNumber}"]`).value) || 0;
+                    const endKm = parseFloat(document.querySelector(`.endKmInput[data-vehicle="${vehicleNumber}"]`).value) || 0;
+
+                    monthData[vehicleNumber] = {
+                        startKm,
+                        endKm
+                    };
+
+                    const distanceCell = document.querySelector(`.startKmInput[data-vehicle="${vehicleNumber}"]`).parentElement.nextElementSibling.nextElementSibling;
+                    distanceCell.textContent = endKm - startKm;
+
+                    saveMonthData(selectedMonth, monthData);
+                }
+            });
+
+            // Écouter le clic sur le bouton d'importation des kms de début
+            importButton.addEventListener('click', importPreviousMonthData);
+
+            // Initialiser la liste déroulante avec les mois de l'année et afficher les numéros de parc pour le mois actuel
             const currentMonth = new Date().getMonth() + 1; // Mois actuel
             monthSelect.value = currentMonth; // Sélectionner le mois actuel par défaut
-            const currentYear = new Date().getFullYear(); // Année actuelle
-            const currentFirstDayOfMonth = getFirstDayOfMonth(currentYear, currentMonth);
-            const currentLastDayOfMonth = getLastDayOfMonth(currentYear, currentMonth);
-            displayDateRange(currentFirstDayOfMonth, currentLastDayOfMonth); // Afficher les dates pour le mois actuel
-
-            // Afficher tous les numéros de parc pour le mois actuel
+            const monthData = loadMonthData(currentMonth); // Charger les données pour le mois actuel
             const allVehicleNumbers = getAllVehicleNumbers();
-            displayVehicleNumbers(allVehicleNumbers);
+            displayVehicleNumbers(allVehicleNumbers, monthData);
         });
-
-
-
-
-
-
-
-
-        
     </script>
-
 </body>
 
 </html>

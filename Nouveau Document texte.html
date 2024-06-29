@@ -4,22 +4,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poullain SEPI - Chantiers</title>
+    <title>Visualisation des Enregistrements Locaux</title>
     <link rel="stylesheet" href="CHANTIER.CSS">
-   
 </head>
 
 <body>
     <header>
         <nav>
-            <h1 class="title">Mes Chantiers</h1>
+            <h1 class="title">Visualisation des Enregistrements Locaux</h1>
+            <div class="button-container">
+                <button id="viewRecordsBtn">Voir Tous les Enregistrements</button>
+            </div>
             <a href="Accueil.html" class="back-button">Retour</a>
         </nav>
     </header>
 
     <main>
         <div class="dropdown-container">
-            <label for="months">Sélectionnez un mois:</label>
             <select id="months" onchange="updateTable()">
                 <option value="janvier">Janvier</option>
                 <option value="fevrier">Février</option>
@@ -39,16 +40,21 @@
         <table>
             <thead>
                 <tr>
+                    <th>Numéro de parc</th>
+                    <th>CA</th>
                     <th>Métier</th>
                     <th>Véhicule</th>
                     <th>Jours</th>
+                    <th>Coût/J</th>
                     <th>Kms</th>
                     <th>Loyer</th>
                     <th>Assurance</th>
                     <th>Carburant</th>
                     <th>Autoroute</th>
+                    <th>Matériaux</th>
                     <th>Social</th>
-                    <th>Coût/J</th>
+                    <th>Marge</th>
+                    <th>%</th>
                 </tr>
             </thead>
             <tbody id="table-body">
@@ -64,16 +70,17 @@
     <script>
         const data = {
             janvier: [
-                { Métier: 'Métier A', vehicule: 'Véhicule 1', jours: 10, kms: 500, loyer: 300, assurance: 100, carburant: 50, autoroute: 20, social: 150, cout_j: 620 },
-                { Métier: 'Métier B', vehicule: 'Véhicule 2', jours: 12, kms: 700, loyer: 350, assurance: 120, carburant: 70, autoroute: 30, social: 180, cout_j: 750 }
+                { numero_parc: '123', ca: 1000, Métier: 'Dépannage électricité', vehicule: 'Véhicule 1', jours: 10, cout_j: 100, kms: 500, loyer: 300, assurance: 100, carburant: 50, autoroute: 20, materiaux: 200, social: 150, marge: 200, pourcentage: 20 },
+                { numero_parc: '456', ca: 1500, Métier: 'Dépannage plomberie', vehicule: 'Véhicule 2', jours: 12, cout_j: 125, kms: 700, loyer: 350, assurance: 120, carburant: 70, autoroute: 30, materiaux: 250, social: 180, marge: 250, pourcentage: 25 }
             ],
             fevrier: [
-                { Métier: 'Métier C', vehicule: 'Véhicule 3', jours: 15, kms: 600, loyer: 320, assurance: 110, carburant: 60, autoroute: 25, social: 160, cout_j: 675 },
-                { Métier: 'Métier D', vehicule: 'Véhicule 4', jours: 8, kms: 400, loyer: 250, assurance: 90, carburant: 40, autoroute: 15, social: 130, cout_j: 525 }
+                { numero_parc: '789', ca: 1200, Métier: 'Dépannage électricité', vehicule: 'Véhicule 3', jours: 15, cout_j: 110, kms: 600, loyer: 320, assurance: 110, carburant: 60, autoroute: 25, materiaux: 220, social: 160, marge: 220, pourcentage: 22 },
+                { numero_parc: '012', ca: 1300, Métier: 'Dépannage plomberie', vehicule: 'Véhicule 4', jours: 8, cout_j: 105, kms: 400, loyer: 250, assurance: 90, carburant: 40, autoroute: 15, materiaux: 180, social: 130, marge: 180, pourcentage: 18 }
             ],
             // Ajoutez les données pour les autres mois
         };
 
+        // Fonction pour mettre à jour le tableau en fonction du mois sélectionné
         function updateTable() {
             const month = document.getElementById('months').value;
             const tbody = document.getElementById('table-body');
@@ -89,6 +96,28 @@
                 tbody.appendChild(tr);
             });
         }
+
+        // Fonction pour afficher tous les enregistrements stockés dans localStorage
+        function displayAllRecords() {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = ''; // Effacer le contenu actuel du tableau
+
+            for (let i = 0; i < localStorage.length; i++) {
+                const key = localStorage.key(i);
+                const record = JSON.parse(localStorage.getItem(key));
+
+                const tr = document.createElement('tr');
+                for (const property in record) {
+                    const td = document.createElement('td');
+                    td.textContent = record[property];
+                    tr.appendChild(td);
+                }
+                tbody.appendChild(tr);
+            }
+        }
+
+        // Ajouter un événement pour le bouton "Voir Tous les Enregistrements"
+        document.getElementById('viewRecordsBtn').addEventListener('click', displayAllRecords);
 
         // Initialiser le tableau avec les données du premier mois
         document.addEventListener('DOMContentLoaded', () => {

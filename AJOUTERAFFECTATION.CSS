@@ -13,11 +13,9 @@ header {
     padding: 15px;
     text-align: left;
 }
-
 h1 {
     margin: 0;
 }
-
 nav {
     background-color: #001f3f; /* Bleu foncé */
     padding: 10px;
@@ -65,7 +63,7 @@ nav a:hover {
     border-radius: 5px; /* Coins arrondis */
     padding: 10px 0; /* Espacement du contenu */
     box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Ombre */
-    top: 35px; /* Décalage vers le bas */
+    top: 20px; /* Décalage vers le bas */
 }
 
 .dropdown-content a {
@@ -85,7 +83,7 @@ nav a:hover {
     text-decoration: none;
     padding: 10px;
     transition: color 0.3s, transform 0.3s;
-    margin-left: 20px;
+    margin-left: 10px; /* Décale le bouton vers la gauche */
 }
 
 .back-button:hover {
@@ -93,47 +91,60 @@ nav a:hover {
     transform: translateY(-1px);
 }
 
-.button-container {
-    display: flex;
-    gap: 10px;
-    margin-right: 40px;
+.form-container {
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    margin: 20px;
+    width: 300px; /* Réduction de la largeur du formulaire */
+    margin-left: auto;
+    margin-right: auto; /* Centre le formulaire horizontalement */
 }
 
-.button-container button {
+.form-container input, .form-container button, .form-container label {
+    padding: 5px;
+    margin: 5px 0;
+    font-size: 0.9em;
+}
+
+.form-container button {
     background-color: #001f3f;
     color: #fff;
     border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 1em;
     border-radius: 5px;
+    cursor: pointer;
     transition: background-color 0.3s, transform 0.3s;
 }
 
-.button-container button:hover {
+.form-container button:hover {
     background-color: #003366;
     transform: translateY(-1px);
 }
 
-
-
-
-.image-container {
-    display: flex; /* Utilisation d'un flexbox pour aligner les images horizontalement */
-   
-    justify-content: center; /* Centre verticalement les éléments */
-    align-items: center; /* Centre horizontalement les éléments */
-    height: 70vh; /* Hauteur égale à 100% de la hauteur de la vue (viewport) */
+table {
+    width: 40%; /* Réduction de la largeur du tableau */
+    max-width: 800px;
+    border-collapse: collapse;
+    margin: 20px 0;
+    margin-left: auto;
+    margin-right: auto; /* Centre le tableau horizontalement */
 }
 
-.image-container img {
-    width: 600px; /* Largeur des images */
-    height: auto; /* Hauteur ajustée automatiquement pour maintenir les proportions */
+table, th, td {
+    border: 1px solid #ddd;
 }
 
+th, td {
+    padding: 8px;
+    text-align: left;
+    font-size: 0.9em;
+}
 
-
-
+th {
+    background-color: #001f3f;
+    color: white;
+}
 
 footer {
     background-color: #001f3f; /* Bleu foncé */

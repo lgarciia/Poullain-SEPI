@@ -4,22 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poullain SEPI - Chantiers</title>
+    <title>Poullain SEPI - Dépannages</title>
     <link rel="stylesheet" href="CHANTIER.CSS">
-   
 </head>
 
 <body>
     <header>
         <nav>
-            <h1 class="title">Mes Chantiers</h1>
+            <h1 class="title">Reporting Electricité</h1>
+            <div class="button-container"></div>
             <a href="Accueil.html" class="back-button">Retour</a>
         </nav>
     </header>
 
     <main>
         <div class="dropdown-container">
-            <label for="months">Sélectionnez un mois:</label>
             <select id="months" onchange="updateTable()">
                 <option value="janvier">Janvier</option>
                 <option value="fevrier">Février</option>
@@ -39,16 +38,20 @@
         <table>
             <thead>
                 <tr>
+                    <th>CA</th>
                     <th>Métier</th>
                     <th>Véhicule</th>
                     <th>Jours</th>
+                    <th>Coût/J</th>
                     <th>Kms</th>
                     <th>Loyer</th>
                     <th>Assurance</th>
                     <th>Carburant</th>
                     <th>Autoroute</th>
+                    <th>Matériaux</th>
                     <th>Social</th>
-                    <th>Coût/J</th>
+                    <th>Marge</th>
+                    <th>%</th>
                 </tr>
             </thead>
             <tbody id="table-body">
@@ -62,28 +65,39 @@
     </footer>
 
     <script>
-        const data = {
-            janvier: [
-                { Métier: 'Métier A', vehicule: 'Véhicule 1', jours: 10, kms: 500, loyer: 300, assurance: 100, carburant: 50, autoroute: 20, social: 150, cout_j: 620 },
-                { Métier: 'Métier B', vehicule: 'Véhicule 2', jours: 12, kms: 700, loyer: 350, assurance: 120, carburant: 70, autoroute: 30, social: 180, cout_j: 750 }
-            ],
-            fevrier: [
-                { Métier: 'Métier C', vehicule: 'Véhicule 3', jours: 15, kms: 600, loyer: 320, assurance: 110, carburant: 60, autoroute: 25, social: 160, cout_j: 675 },
-                { Métier: 'Métier D', vehicule: 'Véhicule 4', jours: 8, kms: 400, loyer: 250, assurance: 90, carburant: 40, autoroute: 15, social: 130, cout_j: 525 }
-            ],
-            // Ajoutez les données pour les autres mois
-        };
+        // Initialisation des données si elles ne sont pas présentes dans le localStorage
+        if (!localStorage.getItem('reportingData')) {
+            const exampleData = {
+                janvier: [
+                    { ca: 1000, Métier: 'Dépannage Electricité', vehicule: 'V001', jours: 10, cout_j: 100, kms: 500, loyer: 300, assurance: 100, carburant: 50, autoroute: 20, materiaux: 200, social: 150, marge: 200, pourcentage: 20 },
+                    { ca: 1500, Métier: 'Métier B', vehicule: 'V002', jours: 12, cout_j: 125, kms: 700, loyer: 350, assurance: 120, carburant: 70, autoroute: 30, materiaux: 250, social: 180, marge: 250, pourcentage: 25 }
+                ],
+                fevrier: [
+                    { ca: 1200, Métier: 'Dépannage Electricité', vehicule: 'V003', jours: 15, cout_j: 110, kms: 600, loyer: 320, assurance: 110, carburant: 60, autoroute: 25, materiaux: 220, social: 160, marge: 220, pourcentage: 22 },
+                    { ca: 1300, Métier: 'Métier D', vehicule: 'V004', jours: 8, cout_j: 105, kms: 400, loyer: 250, assurance: 90, carburant: 40, autoroute: 15, materiaux: 180, social: 130, marge: 180, pourcentage: 18 }
+                ],
+                // Ajoutez les données pour les autres mois de la même manière
+            };
+            localStorage.setItem('reportingData', JSON.stringify(exampleData));
+        }
 
         function updateTable() {
             const month = document.getElementById('months').value;
             const tbody = document.getElementById('table-body');
             tbody.innerHTML = ''; // Effacer le contenu actuel du tableau
 
-            data[month].forEach(row => {
+            const data = JSON.parse(localStorage.getItem('reportingData')) || {};
+            const filteredData = data[month]?.filter(item => item.Métier === 'Dépannage Electricité') || [];
+
+            filteredData.forEach(row => {
                 const tr = document.createElement('tr');
                 for (const key in row) {
                     const td = document.createElement('td');
-                    td.textContent = row[key];
+                    if (key === 'vehicule' && row.Métier === 'Dépannage Electricité') {
+                        td.textContent = row[key]; // Affiche le code de véhicule
+                    } else {
+                        td.textContent = row[key]; // Affiche les autres colonnes normalement
+                    }
                     tr.appendChild(td);
                 }
                 tbody.appendChild(tr);

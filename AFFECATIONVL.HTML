@@ -11,7 +11,10 @@
 <body>
     <header>
         <nav>
-            <h1 class="title">Attributions Planning</h1>
+            <h1 class="title">Attributions Planning Véhicule</h1>
+            <div class="button-container">
+                <a href="AJOUTERMETIER.HTML" class="button-container">Ajouter un métier</a>
+            </div>
             <a href="VHL.HTML" class="back-button">Retour</a>
         </nav>
     </header>
@@ -23,19 +26,18 @@
                 <!-- Options de véhicules seront ajoutées dynamiquement ici -->
             </select>
 
-            <label for="personne1">Personne 1 :</label>
-            <select id="personne1" name="personne1">
-                <!-- Options des employés seront ajoutées dynamiquement ici -->
+            <label for="chantier">Métier :</label>
+            <select id="chantier" name="chantier" required>
+                <!-- Options de métiers d'affectation seront ajoutées dynamiquement ici -->
             </select>
 
-            <label for="personne2">Personne 2 :</label>
-            <select id="personne2" name="personne2">
-                <!-- Options des employés seront ajoutées dynamiquement ici -->
-            </select>
-
-            <label for="personne3">Personne 3 :</label>
-            <select id="personne3" name="personne3">
-                <!-- Options des employés seront ajoutées dynamiquement ici -->
+            <label for="indisponibilite">Indisponibilité :</label>
+            <select id="indisponibilite" name="indisponibilite">
+                <option value="">-- Aucune --</option>
+                <option value="Indispo Salarié">Indispo Salarié</option>
+                <option value="Indispo Garage">Indispo Garage</option>
+                <option value="Indispo Intempérie">Indispo Intempérie</option>
+                <option value="Indispo J/Férié">Indispo J/Férié</option>
             </select>
 
             <label for="dateDebut">Date de début :</label>
@@ -53,9 +55,8 @@
                 <thead>
                     <tr>
                         <th>Véhicule</th>
-                        <th>Personne 1</th>
-                        <th>Personne 2</th>
-                        <th>Personne 3</th>
+                        <th>Métier</th>
+                        <th>Indisponibilité</th>
                         <th>Date de début</th>
                         <th>Date de fin</th>
                         <th>Nombre de jours</th>
@@ -87,38 +88,36 @@
             });
         }
 
-        // Fonction pour charger les employés depuis le stockage local
-        function chargerEmployes() {
-            let employees = JSON.parse(localStorage.getItem('employees')) || [];
-            let selects = document.querySelectorAll('#personne1, #personne2, #personne3');
+        // Fonction pour charger les métiers d'affectation depuis affectations-ajouter-metier
+        function chargerMetiersAffectation() {
+            let metiers = JSON.parse(localStorage.getItem('affectations-ajouter-metier')) || [];
+            let selectElement = document.getElementById('chantier');
 
             // Réinitialiser les options existantes
-            selects.forEach(select => {
-                select.innerHTML = '<option value="">-- Aucune --</option>'; // Ajouter une option vide
-            });
+            selectElement.innerHTML = '';
 
-            // Ajouter une option par employé
-            employees.forEach(employee => {
+            // Ajouter une option par métier d'affectation
+            metiers.forEach(metier => {
                 let option = document.createElement('option');
-                option.value = employee.fullName;
-                option.textContent = employee.fullName;
-                selects.forEach(select => select.appendChild(option.cloneNode(true)));
+                option.value = metier.name; // Assurez-vous d'utiliser la propriété correcte pour l'identifiant du métier
+                option.textContent = metier.name; // Assurez-vous d'utiliser la propriété correcte pour le nom du métier
+                selectElement.appendChild(option);
             });
         }
 
-        // Appeler les fonctions pour charger les véhicules et les employés au chargement de la page
-        document.addEventListener('DOMContentLoaded', function() {
+        // Appeler les fonctions pour charger les véhicules et les attributions au chargement de la page
+        document.addEventListener('DOMContentLoaded', function () {
             chargerVehicules();
-            chargerEmployes();
+            chargerMetiersAffectation();
+            chargerAttributionsPlanningLocales(); // Charger les attributions de planning locales
         });
 
         // Fonction pour ajouter une attribution planning au tableau et enregistrer localement
         function ajouterAttributionPlanning() {
             // Récupérer les valeurs du formulaire
             let vehicule = document.getElementById('vehicule').value;
-            let personne1 = document.getElementById('personne1').value || '-- Aucune --';
-            let personne2 = document.getElementById('personne2').value || '-- Aucune --';
-            let personne3 = document.getElementById('personne3').value || '-- Aucune --';
+            let chantier = document.getElementById('chantier').value;
+            let indisponibilite = document.getElementById('indisponibilite').value || '-- Aucune --';
             let dateDebut = document.getElementById('dateDebut').value;
             let dateFin = document.getElementById('dateFin').value;
 
@@ -131,9 +130,8 @@
             // Créer un objet d'attribution planning
             let attributionPlanning = {
                 vehicule: vehicule,
-                personne1: personne1,
-                personne2: personne2,
-                personne3: personne3,
+                chantier: chantier,
+                indisponibilite: indisponibilite,
                 dateDebut: dateDebut,
                 dateFin: dateFin,
                 differenceDays: differenceDays
@@ -155,9 +153,8 @@
             let newRow = tableBody.insertRow();
             newRow.innerHTML = `
                 <td>${attributionPlanning.vehicule}</td>
-                <td>${attributionPlanning.personne1}</td>
-                <td>${attributionPlanning.personne2}</td>
-                <td>${attributionPlanning.personne3}</td>
+                <td>${attributionPlanning.chantier}</td>
+                <td>${attributionPlanning.indisponibilite}</td>
                 <td>${attributionPlanning.dateDebut}</td>
                 <td>${attributionPlanning.dateFin}</td>
                 <td>${attributionPlanning.differenceDays}</td>
@@ -177,18 +174,22 @@
         // Fonction pour enregistrer l'attribution planning dans le stockage local
         function enregistrerAttributionPlanningLocale(attributionPlanning) {
             // Récupérer les attributions planning existantes depuis le stockage local
-            let attributionsPlanning = JSON.parse(localStorage.getItem('attributionsPlanning')) || [];
+            let attributionsPlanning = JSON.parse(localStorage.getItem('attributionPlanningvl')) || [];
 
             // Ajouter la nouvelle attribution planning à la liste
             attributionsPlanning.push(attributionPlanning);
 
             // Mettre à jour le stockage local
-            localStorage.setItem('attributionsPlanning', JSON.stringify(attributionsPlanning));
+            localStorage.setItem('attributionPlanningvl', JSON.stringify(attributionsPlanning));
         }
 
         // Fonction pour charger les attributions planning depuis le stockage local
         function chargerAttributionsPlanningLocales() {
-            let attributionsPlanning = JSON.parse(localStorage.getItem('attributionsPlanning')) || [];
+            let attributionsPlanning = JSON.parse(localStorage.getItem('attributionPlanningvl')) || [];
+
+            // Vider le tableau existant
+            let tableBody = document.getElementById('tableBody');
+            tableBody.innerHTML = '';
 
             // Ajouter les attributions planning au tableau
             attributionsPlanning.forEach(attributionPlanning => {
@@ -204,19 +205,17 @@
             // Parcourir chaque ligne du tableau et récupérer les données
             rows.forEach(row => {
                 let vehicule = row.cells[0].textContent;
-                let personne1 = row.cells[1].textContent;
-                let personne2 = row.cells[2].textContent;
-                let personne3 = row.cells[3].textContent;
-                let dateDebut = row.cells[4].textContent;
-                let dateFin = row.cells[5].textContent;
-                let differenceDays = row.cells[6].textContent;
+                let chantier = row.cells[1].textContent;
+                let indisponibilite = row.cells[2].textContent;
+                let dateDebut = row.cells[3].textContent;
+                let dateFin = row.cells[4].textContent;
+                let differenceDays = row.cells[5].textContent;
 
                 // Créer un objet attribution planning
                 let attributionPlanning = {
                     vehicule: vehicule,
-                    personne1: personne1,
-                    personne2: personne2,
-                    personne3: personne3,
+                    chantier: chantier,
+                    indisponibilite: indisponibilite,
                     dateDebut: dateDebut,
                     dateFin: dateFin,
                     differenceDays: differenceDays
@@ -227,14 +226,14 @@
             });
 
             // Mettre à jour le stockage local avec les nouvelles attributions planning
-            localStorage.setItem('attributionsPlanning', JSON.stringify(attributionsPlanning));
+            localStorage.setItem('attributionPlanningvl', JSON.stringify(attributionsPlanning));
         }
 
         // Charger les attributions planning depuis le stockage local au chargement de la page
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             chargerAttributionsPlanningLocales();
             chargerVehicules(); // Charger également les véhicules au chargement de la page
-            chargerEmployes(); // Charger également les employés au chargement de la page
+            chargerMetiersAffectation(); // Charger les métiers d'affectation au chargement de la page
         });
     </script>
 

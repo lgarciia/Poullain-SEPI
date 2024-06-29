@@ -1,0 +1,141 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5;
+    color: #333;
+}
+
+header {
+    background-color: #001f3f; /* Bleu foncé */
+    color: #fff;
+    padding: 15px;
+    text-align: left;
+}
+
+h1 {
+    margin: 0;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.back-button {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px;
+    transition: color 0.3s, transform 0.3s;
+}
+
+.back-button:hover {
+    color: #99bbcc;
+    transform: translateY(-1px);
+}
+
+.main-content {
+    padding: 20px;
+}
+
+.button-container label {
+    align-self: center;
+}
+
+
+
+
+
+
+/* Style pour le bouton "Ajouter un métier" */
+.button-container {
+    grid-column: span 2;
+    background-color: #001f3f;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    text-decoration: none; /* Supprime le soulignement */
+}
+.button-container:hover {
+
+    transform: translateY(-1px);
+}
+
+   
+
+
+
+/* Styles pour le formulaire */
+form {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 80%; /* Largeur du formulaire */
+    margin: auto; /* Centre le formulaire horizontalement */
+    margin-bottom: 20px; /* Espacement entre le formulaire et le tableau */
+}
+
+form label {
+    margin-bottom: 8px;
+    display: block; /* Afficher les labels en bloc */
+    font-weight: bold; /* Gras pour les labels */
+}
+
+form input[type="text"],
+form input[type="date"],
+form select {
+    width: calc(50% - 10px); /* Largeur des champs de saisie */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+form select {
+    width: calc(100% - 22px); /* Largeur du select */
+}
+
+form button {
+    background-color: #001f3f;
+    color: #fff;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: background-color 0.3s, transform 0.3s;
+    width: 100%; /* Pleine largeur du bouton */
+}
+
+form button:hover {
+    background-color: #003366;
+    transform: translateY(-1px);
+}
+
+/* Styles pour le tableau */
+table {
+    border-collapse: collapse;
+    width: 80%; /* Largeur du tableau */
+    margin: auto; /* Centrer le tableau horizontalement */
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: center;
+}
+
+th {
+    background-color: #001f3f;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}

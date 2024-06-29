@@ -4,22 +4,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poullain SEPI - Ajout de Lieux d'Affectation</title>
+    <title>Poullain SEPI</title>
     <link rel="stylesheet" href="AJOUTERAFFECTATION.CSS">
-   
 </head>
 
 <body>
     <header>
         <nav>
-            <h1 class="title">Ajouter un Lieu d'Affectation</h1>
-            <a href="LOYER.HTML" class="back-button">Retour</a>
+            <h1 class="title">Ajouter Métier d'Affectation</h1>
+            <a href="VHL.HTML" class="back-button">Retour</a>
         </nav>
     </header>
 
     <div class="form-container">
         <form id="affectationForm">
-            <input type="text" id="affectationName" placeholder="Nom du lieu d'affectation" required>
+            <input type="text" id="affectationName" placeholder="Métier d'affectation" required>
             <button type="submit">Ajouter</button>
         </form>
     </div>
@@ -27,7 +26,7 @@
     <table id="affectationTable">
         <thead>
             <tr>
-                <th>Lieu d'Affectation</th>
+                <th>Métier d'Affectation</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -40,9 +39,10 @@
         document.addEventListener('DOMContentLoaded', function() {
             const affectationForm = document.getElementById('affectationForm');
             const affectationTableBody = document.getElementById('affectationTable').getElementsByTagName('tbody')[0];
+            const localStorageKey = 'affectations-ajouter-metier'; // Clé unique pour cette page
 
-            // Load saved affectations from localStorage
-            const savedAffectations = JSON.parse(localStorage.getItem('affectations')) || [];
+            // Charger les affectations sauvegardées depuis localStorage
+            const savedAffectations = JSON.parse(localStorage.getItem(localStorageKey)) || [];
             savedAffectations.forEach(affectation => addAffectationToTable(affectation));
 
             affectationForm.addEventListener('submit', function(event) {
@@ -54,14 +54,14 @@
                     name: affectationName
                 };
 
-                // Add the affectation to the table
+                // Ajouter l'affectation au tableau
                 addAffectationToTable(affectation);
 
-                // Save the affectation to localStorage
+                // Sauvegarder l'affectation dans localStorage
                 savedAffectations.push(affectation);
-                localStorage.setItem('affectations', JSON.stringify(savedAffectations));
+                localStorage.setItem(localStorageKey, JSON.stringify(savedAffectations));
 
-                // Reset the form
+                // Réinitialiser le formulaire
                 affectationForm.reset();
             });
 
@@ -78,7 +78,7 @@
                 deleteButton.onclick = function() {
                     const rowIndex = newRow.rowIndex - 1;
                     savedAffectations.splice(rowIndex, 1);
-                    localStorage.setItem('affectations', JSON.stringify(savedAffectations));
+                    localStorage.setItem(localStorageKey, JSON.stringify(savedAffectations));
                     affectationTableBody.deleteRow(rowIndex);
                 };
                 actionCell.appendChild(deleteButton);

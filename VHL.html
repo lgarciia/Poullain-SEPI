@@ -6,83 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Poullain SEPI - Véhicules</title>
     <link rel="stylesheet" href="VHL.CSS">
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            font-family: Arial, sans-serif;
-            background-color: #f5f5f5;
-            color: #333;
-        }
-
-        header {
-            background-color: #001f3f; /* Bleu foncé */
-            color: #fff;
-            padding: 15px;
-            text-align: left;
-        }
-
-        nav {
-            background-color: #001f3f; /* Bleu foncé */
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 10px 20px;
-            width: 100%;
-        }
-
-        .title {
-            margin: 0;
-            color: #fff;
-            font-size: 1.5em;
-        }
-
-        .back-button {
-            color: #fff;
-            text-decoration: none;
-            padding: 10px;
-            transition: color 0.3s, transform 0.3s;
-            margin-left: 20px;
-        }
-
-        .back-button:hover {
-            color: #99bbcc;
-            transform: translateY(-1px);
-        }
-
-        .button-container {
-            display: flex;
-            gap: 10px;
-            margin-right: 20px;
-        }
-
-        .button-container button {
-            background-color: #001f3f;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-size: 1em;
-            border-radius: 5px;
-            transition: background-color 0.3s, transform 0.3s;
-        }
-
-        .button-container button:hover {
-            background-color: #003366;
-            transform: translateY(-1px);
-        }
-
-        footer {
-            background-color: #001f3f; /* Bleu foncé */
-            color: #fff;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
 </head>
 
 <body>
@@ -90,17 +13,32 @@
         <nav>
             <h1 class="title">Mes Véhicules</h1>
             <div class="button-container">
-                <button onclick="window.location.href='LOYER.html'">Ajouter un véhicule</button>
-                <button onclick="window.location.href='LOYERCONSU.html'">Loyer</button>
-                <button onclick="window.location.href='kms.html'">Kms</button>
-                <button onclick="window.location.href='ASSUCONSU.html'">Assurance</button>
-                <button onclick="window.location.href='carburant.html'">Carburant</button>
-                <button onclick="window.location.href='Affecation.html'">Affectation</button>
+                <button onclick="window.location.href='LOYER.HTML'">Ajouter un véhicule</button>
+                <button onclick="window.location.href='LOYERCONSU.HTML'">Loyer</button>
+                <button onclick="window.location.href='KMS.HTML'">Kms</button>
+                <button onclick="window.location.href='ASSUCONSU.HTML'">Assurance</button>
+                <button onclick="window.location.href='CARBURANT.HTML'">Carburant</button>
+                <button onclick="window.location.href='AUTOROUTE.HTML'">Autoroute</button>
+                
+                <div class="dropdown">
+                    <button class="dropbtn">Affectation</button>
+                    <div class="dropdown-content">
+                        <a href="AFFECATION.HTML">Affectation Planning</a>
+                        <a href="AFFECATIONVL.HTML">Affectation Vehicule</a>
+                    </div>
+                </div>
             </div>
+
             <a href="Accueil.html" class="back-button">Retour</a>
         </nav>
     </header>
-
+    
+    <!-- Insérer les images -->
+    <div class="image-container">
+        <img src="C:\Users\lucas\OneDrive\Bureau\CODE HTML\Application VHL\CAMION.png" alt="Image Plomberie">
+        <img src="C:\Users\lucas\OneDrive\Bureau\CODE HTML\Application VHL\CAMION2.png" alt="Image Electricité">
+    </div>
+    
     <footer>
         <p>&copy; 2024 Poullain SEPI. Tous droits réservés.</p>
     </footer>

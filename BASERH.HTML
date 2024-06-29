@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base RH - Social</title>
+    <link rel="stylesheet" href="BASERH.CSS">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <h1>Formulaire Base RH - Social</h1>
+            <a href="SOCIAL.HTML" class="back-button">Retour</a>
+        </nav>
+    </header>
+    <main>
+        <div class="form-container">
+            <form id="employeeForm">
+                <div class="form-group">
+                    <label for="employeeId">Numéro de matricule :</label>
+                    <input type="text" id="employeeId" name="employeeId" required>
+                </div>
+                <div class="form-group">
+                    <label for="fullName">Nom et prénom :</label>
+                    <input type="text" id="fullName" name="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="dob">Date de naissance :</label>
+                    <input type="date" id="dob" name="dob" required>
+                </div>
+                <div class="form-group">
+                    <label for="gender">Genre :</label>
+                    <select id="gender" name="gender">
+                        <option value="Homme">Homme</option>
+                        <option value="Femme">Femme</option>
+                        <option value="Autre">Autre</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="position">Poste occupé :</label>
+                    <input type="text" id="position" name="position" required>
+                </div>
+                <div class="form-group">
+                    <label for="hireDate">Date d'embauche :</label>
+                    <input type="date" id="hireDate" name="hireDate" required>
+                </div>
+                <div class="form-group">
+                    <label for="salary">Salaire par mois :</label>
+                    <input type="number" id="salary" name="salary" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Adresse email :</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="phone">Numéro de téléphone :</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="department">Département :</label>
+                    <input type="text" id="department" name="department" required>
+                </div>
+                <div class="form-group">
+                    <label for="files">Joindre des fichiers :</label>
+                    <input type="file" id="files" name="files[]" multiple>
+                </div>
+                <div class="form-group">
+                    <label for="status">Statut :</label>
+                    <select id="status" name="status">
+                        <option value="Employé">Employé</option>
+                        <option value="Sorti de l'entreprise">Sorti de l'entreprise</option>
+                    </select>
+                </div>
+                <button type="submit">Enregistrer</button>
+            </form>
+        </div>
+
+        <div class="table-container">
+            <table id="employeeTable">
+                <thead>
+                    <tr>
+                        <th>Numéro de matricule</th>
+                        <th>Nom et prénom</th>
+                        <th>Date de naissance</th>
+                        <th>Genre</th>
+                        <th>Poste occupé</th>
+                        <th>Date d'embauche</th>
+                        <th>Salaire</th>
+                        <th>Email</th>
+                        <th>Numéro de téléphone</th>
+                        <th>Département</th>
+                        <th>Statut</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Les lignes du tableau seront ajoutées ici dynamiquement -->
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Charger les données depuis le localStorage
+            const storedEmployees = JSON.parse(localStorage.getItem("employees")) || [];
+            const tableBody = document.getElementById("employeeTable").getElementsByTagName('tbody')[0];
+
+            function addRow(employee) {
+                const newRow = tableBody.insertRow(-1);
+
+                Object.keys(employee).forEach((key, index) => {
+                    const newCell = newRow.insertCell(index);
+                    newCell.textContent = employee[key];
+                });
+
+                const actionCell = newRow.insertCell(-1);
+                const deleteButton = document.createElement("button");
+                deleteButton.textContent = "Supprimer";
+                deleteButton.onclick = function () {
+                    tableBody.deleteRow(newRow.rowIndex - 1);
+                    storedEmployees.splice(newRow.rowIndex - 1, 1);
+                    localStorage.setItem("employees", JSON.stringify(storedEmployees));
+                };
+                actionCell.appendChild(deleteButton);
+            }
+
+            storedEmployees.forEach(addRow);
+
+            document.getElementById("employeeForm").addEventListener("submit", function (event) {
+                event.preventDefault(); // Empêche le formulaire d'être soumis
+
+                const employee = {
+                    employeeId: document.getElementById("employeeId").value,
+                    fullName: document.getElementById("fullName").value,
+                    dob: document.getElementById("dob").value,
+                    gender: document.getElementById("gender").value,
+                    position: document.getElementById("position").value,
+                    hireDate: document.getElementById("hireDate").value,
+                    salary: document.getElementById("salary").value,
+                    email: document.getElementById("email").value,
+                    phone: document.getElementById("phone").value,
+                    department: document.getElementById("department").value,
+                    status: document.getElementById("status").value
+                };
+
+                storedEmployees.push(employee);
+                localStorage.setItem("employees", JSON.stringify(storedEmployees));
+                addRow(employee);
+
+                // Réinitialisation du formulaire
+                document.getElementById("employeeForm").reset();
+            });
+        });
+    </script>
+</body>
+
+</html>

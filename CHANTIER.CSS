@@ -50,36 +50,93 @@ nav a:hover {
     transform: translateY(-1px);
 }
 
-.dropdown {
-    position: relative;
-    display: inline-block;
+.dropdown-container {
+    margin: 20px auto; /* Centrer horizontalement */
+    width: 60%; /* Largeur du conteneur */
+    text-align: center; /* Centrer le contenu */
 }
 
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #001f3f; /* Bleu foncé */
-    width: 200px; /* Largeur souhaitée */
-    z-index: 1;
-    border-radius: 5px; /* Coins arrondis */
-    padding: 10px 0; /* Espacement du contenu */
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); /* Ombre */
-    top: 20px; /* Décalage vers le bas */
+.dropdown-container label {
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.dropdown-container select {
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+}
+
+
+table {
+    width: 60%; /* Largeur du tableau. Ajustez pour rendre le tableau plus ou moins large. */
+    border-collapse: collapse; /* Fusionne les bordures des cellules adjacentes en une seule bordure. */
+    margin: 20px auto; /* Centrer horizontalement et ajouter un espace de 20px en haut et en bas du tableau. */
+    font-size: 15px; /* Taille de la police pour tout le texte du tableau. */
+}
+
+table, th, td {
+    border: 1px solid #ddd; /* Ajoute une bordure grise claire aux cellules du tableau. */
+    text-align: left; /* Aligne le texte à gauche dans les cellules. */
+}
+
+th, td {
+    padding: 5px; /* Ajoute un espace intérieur de 12px autour du contenu des cellules. */
+}
+
+th {
+    background-color: #2C3E50; /* Bleu foncé. Changez cette valeur pour ajuster la couleur d'arrière-plan des cellules d'en-tête. */
+    color: white; /* Couleur du texte dans les cellules d'en-tête. Changez cette valeur pour ajuster la couleur du texte. */
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2; /* Change la couleur d'arrière-plan pour les lignes paires du tableau. */
+}
+
+
+/* Style pour le conteneur des boutons */
+.button-container {
+    display: flex; /* Utilisation de Flexbox pour aligner les boutons horizontalement */
+    gap: 30px; /* Espacement entre chaque bouton */
+    margin-right: 130px; /* Marge à droite du conteneur (ajustez selon vos besoins) */
+}
+
+/* Style pour les boutons à l'intérieur du conteneur */
+.button-container button {
+    background-color: #909497; /* Couleur de fond des boutons */
+    color: #fff; /* Couleur du texte des boutons */
+    border: none; /* Pas de bordure autour des boutons */
+    padding: 10px 20px; /* Espacement intérieur des boutons (haut/bas et gauche/droite) */
+    cursor: pointer; /* Curseur de la souris se transforme en main pour indiquer que les boutons sont cliquables */
+    font-size: 1em; /* Taille de police des boutons (ajustez selon vos préférences) */
+    border-radius: 5px; /* Rayon de bordure arrondi pour adoucir les coins des boutons */
+    transition: background-color 0.3s, transform 0.3s; /* Transition douce pour le changement de couleur de fond et l'effet de translation lors du survol */
+}
+
+/* Style pour le survol des boutons */
+.button-container button:hover {
+    background-color: #003366; /* Nouvelle couleur de fond lorsque le bouton est survolé */
+    transform: translateY(-1px); /* Légère translation vers le haut pour créer un effet de légèreté */
 }
 
 
 
-.dropdown-content a {
-    color: #fff; /* Blanc */
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left; /* Alignement du texte à gauche */
+
+.image-container {
+    display: flex; /* Utilisation d'un flexbox pour aligner les images horizontalement */
+   
+    justify-content: center; /* Centre verticalement les éléments */
+    align-items: center; /* Centre horizontalement les éléments */
+    height: 70vh; /* Hauteur égale à 100% de la hauteur de la vue (viewport) */
 }
 
-.dropdown:hover .dropdown-content {
-    display: block;
+.image-container img {
+    width: 600px; /* Largeur des images */
+    height: auto; /* Hauteur ajustée automatiquement pour maintenir les proportions */
 }
+
+
 
 footer {
     background-color: #001f3f; /* Bleu foncé */

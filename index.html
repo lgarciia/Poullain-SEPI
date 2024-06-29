@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="..\TDB SMURFIT\IMAGES\FAVKAPPA.png" type="image/x-icon">
+    <link rel="stylesheet" href="PINSCRIPTION.css">
+    <title>Poullain SEPI</title>
+</head>
+<body>
+    <div class="overlay"></div>
+    <div class="navbar">
+        <h1>Espace de travail - Poullain SEPI -</h1>
+    </div>
+    <div class="container" id="formContainer">
+        <div class="toggle-buttons">
+            <button class="signup-btn active" onclick="showSignup()">S'inscrire</button>
+            <button class="login-btn" onclick="showLogin()">Se connecter</button>
+        </div>
+        <h2 id="form-title">Inscription</h2>
+        <form id="userForm">
+            <label for="username">Identifiant</label>
+            <input type="text" id="username" name="username" required>
+            
+            <label for="password">Mot de passe</label>
+            <input type="password" id="password" name="password" required>
+            
+            <input type="submit" id="submit-btn" value="S'inscrire">
+        </form>
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        let isSignup = true;
+
+        document.getElementById('userForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            let username = document.getElementById('username').value;
+            let password = document.getElementById('password').value;
+            
+            if (username && password) {
+                let users = JSON.parse(localStorage.getItem('users')) || {};
+                
+                if (isSignup) {
+                    if (users[username]) {
+                        document.getElementById('message').textContent = 'L\'identifiant existe déjà.';
+                        document.getElementById('message').style.color = 'red';
+                    } else {
+                        users[username] = password;
+                        localStorage.setItem('users', JSON.stringify(users));
+                        document.getElementById('message').textContent = 'Inscription réussie !';
+                        document.getElementById('message').style.color = 'green';
+                        document.getElementById('userForm').reset();
+                    }
+                } else {
+                    if (users[username] && users[username] === password) {
+                        document.getElementById('message').textContent = 'Connexion réussie !';
+                        document.getElementById('message').style.color = 'green';
+                        localStorage.setItem('loggedInUser', username);
+                        window.location.href = 'Accueil.html'; // Redirection vers la page locale
+                    } else {
+                        document.getElementById('message').textContent = 'Identifiant ou mot de passe incorrect.';
+                        document.getElementById('message').style.color = 'red';
+                    }
+                }
+            } else {
+                document.getElementById('message').textContent = 'Veuillez remplir tous les champs.';
+                document.getElementById('message').style.color = 'red';
+            }
+        });
+
+        function showSignup() {
+            isSignup = true;
+            document.getElementById('form-title').textContent = 'Inscription';
+            document.getElementById('submit-btn').value = 'S\'inscrire';
+            document.getElementById('message').textContent = '';
+            document.getElementById('userForm').reset();
+            document.getElementById('formContainer').style.transform = 'translateX(0)';
+            document.getElementById('formContainer').style.opacity = '1';
+            document.querySelector('.signup-btn').classList.add('active');
+            document.querySelector('.login-btn').classList.remove('active');
+        }
+
+        function showLogin() {
+            isSignup = false;
+            document.getElementById('form-title').textContent = 'Connexion';
+            document.getElementById('submit-btn').value = 'Se connecter';
+            document.getElementById('message').textContent = '';
+            document.getElementById('userForm').reset();
+            document.getElementById('formContainer').style.transform = 'translateX(0)';
+            document.getElementById('formContainer').style.opacity = '1';
+            document.querySelector('.login-btn').classList.add('active');
+            document.querySelector('.signup-btn').classList.remove('active');
+        }
+    </script>
+</body>
+</html>

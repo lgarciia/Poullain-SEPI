@@ -4,71 +4,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poullain SEPI</title>
-    <link rel="stylesheet" href="Accueil.css">
-    <style>
-        nav {
-            background-color: #001f3f; /* Bleu foncé */
-            padding: 10px;
-            text-align: center;
-        }
-
-        nav a {
-            color: #fff; /* Blanc */
-            text-decoration: none;
-            padding: 10px;
-            position: relative;
-            transition: color 0.3s, transform 0.3s;
-        }
-
-        nav a:hover {
-            color: #ffcc00; /* Jaune */
-            transform: translateY(-3px);
-        }
-
-        footer {
-            background-color: #001f3f; /* Bleu foncé */
-            color: #fff;
-            text-align: center;
-            padding: 10px 0;
-            position: fixed;
-            bottom: 0;
-            width: 100%;
-        }
-    </style>
+    <title>Poullain SEPI - Dépannages</title>
+    <link rel="stylesheet" href="CHANTIER.CSS">
 </head>
 
 <body>
     <header>
-        <h1>Mes Dépannages</h1>
+        <nav>
+            <h1 class="title">Mes Dépannages</h1>
+            <div class="button-container">
+                <button onclick="window.location.href='REPORTINGELEC.HTML'">Electricité</button>
+                <button onclick="window.location.href='REPORTINGPLOMB.HTML'">Plomberie</button>
+            </div>
+            <a href="Accueil.html" class="back-button">Retour</a>
+        </nav>
     </header>
 
-    <nav>
-        <ul>
-            <li class="dropdown">
-                <a href="#">Chantier</a>
-                <div class="dropdown-content">
-                    <a href="#">Chargé d'Affaires 1</a>
-                    <a href="#">Chargé d'Affaires 2</a>
-                    <a href="#">Chargé d'Affaires 3</a>
-                    <a href="#">Chargé d'Affaires 4</a>
-                </div>
-            </li>
-            <li class="dropdown">
-                <a href="#">Dépannage</a>
-                <div class="dropdown-content">
-                    <a href="#">Dépanneur 1</a>
-                    <a href="#">Dépanneur 2</a>
-                    <a href="#">Dépanneur 3</a>
-                </div>
-            </li>
-            <li><a href="#">Véhicules</a></li>
-        </ul>
-    </nav>
+    <!-- Insérer les images -->
+    <div class="image-container">
+        <a href="REPORTINGPLOMB.HTML">
+        <img src="C:\Users\lucas\OneDrive\Bureau\CODE HTML\Application VHL\PLOMB.jpg" alt="Image Plomberie">
+    </a>
+    <a href="REPORTINGELEC.HTML">
+        <img src="C:\Users\lucas\OneDrive\Bureau\CODE HTML\Application VHL\ELEC.png" alt="Image Electricité">
+    </a>
+    </div>
 
     <footer>
         <p>&copy; 2024 Poullain SEPI. Tous droits réservés.</p>
     </footer>
+
 </body>
 
 </html>

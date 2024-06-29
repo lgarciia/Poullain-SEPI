@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Import Excel Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+            background-color: #f4f4f9;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-bottom: 20px;
+        }
+
+        input[type="file"] {
+            margin: 10px 0;
+            padding: 10px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        table.data {
+            width: 80%;
+            margin: 0 auto;
+            border-collapse: collapse;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background-color: white;
+        }
+
+        table.data, table.data th, table.data td {
+            border: 1px solid #ddd;
+        }
+
+        table.data th, table.data td {
+            padding: 12px;
+            text-align: left;
+        }
+
+        table.data th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        table.data tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        table.data tr:hover {
+            background-color: #ddd;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <h1>Import Excel Data</h1>
+        <form action="/" method="post" enctype="multipart/form-data">
+            <input type="file" name="file">
+            <button type="submit">Upload and Display</button>
+        </form>
+        <br>
+        {% if tables %}
+            <h2>Data from Excel:</h2>
+            {% for table in tables %}
+                {{ table | safe }}
+            {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>
